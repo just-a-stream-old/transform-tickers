@@ -4,8 +4,8 @@ context:
 spring:
   # Spring Data JPA
   data.mongodb:
-    port: 27017
-    host: localhost
+    port: {REPOSITORY_PORT:27017}
+    host: {REPOSITORY_HOST:localhost}
 
   # Spring Cloud Stream
   cloud:
@@ -14,26 +14,22 @@ spring:
       bindings:
         # Input(s)
         generateTickerDataModel-in-0:
-          destination: ${INPUT_TOPIC_0}
+          destination: ${GENERATE_TICKER_DATA_MODEL_INPUT_0:myDefault}
         generateTickerDataModel-in-1:
-          destination: ${INPUT_TOPIC_1}
+          destination: ${GENERATE_TICKER_DATA_MODEL_INPUT_1:default}
 
       kafka.streams:
         bindings:
           generateTickerDataModel-in-0-consumer:
-            applicationId: dfdfdf
-            dlqName: dlq name
+            applicationId: ${GENERATE_TICKER_DATA_MODEL_APP_ID_0}
+            dlqName: ${GENERATE_TICKER_DATA_MODEL_DLQ_TOPIC_0}
           generateTickerDataModel-in-1-consumer:
-            applicationId: dfdfdf
-            materializedAs: state store name to materialise incoming data with
-            dlqName: dlq name 2
-          # Additional State Stores
-          stateStore:
-            stateStoreOneName: my state store one name
+            applicationId: ${GENERATE_TICKER_DATA_MODEL_APP_ID_1}
+            dlqName: ${GENERATE_TICKER_DATA_MODEL_DLQ_TOPIC_1}
 
         binder:
           brokers: broker
-          deserializationExceptionHandler: logAndFail # Optional: logAndFail, sendToDlq, logAndSkip
+          deserializationExceptionHandler: ${DESERIALIZATION_EXCEPTION_HANDLER:logAndFail} # Optional: logAndFail, sendToDlq, logAndSkip
           configuration:
             # Internal Topics
             replication.factor: ${INTERNAL_TOPIC_REPLICATION_FACTOR:3}
@@ -45,7 +41,3 @@ spring:
             # SerDes
             default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
             default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
-
-
-
-
