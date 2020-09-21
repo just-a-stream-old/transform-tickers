@@ -1,7 +1,7 @@
 package finance.modelling.data.transform.transformtickers.service;
 
 import finance.modelling.data.transform.transformtickers.repository.TickerRepository;
-import finance.modelling.data.transform.transformtickers.service.config.TopicConfig;
+import finance.modelling.fmcommons.data.logging.kstream.LogMessageConsumed;
 import finance.modelling.fmcommons.data.schema.eod.dto.EodTickerDTO;
 import finance.modelling.fmcommons.data.schema.fmp.dto.FmpTickerDTO;
 import org.apache.kafka.streams.kstream.KStream;
@@ -21,7 +21,7 @@ public class TickerDataModelServiceImpl implements TickerDataModelService {
     public TickerDataModelServiceImpl(
             @Value("${spring.cloud.stream.bindings.generateTickerDataModel-in-0.destination}") String inputFmpTickersTopic,
             @Value("${spring.cloud.stream.bindings.generateTickerDataModel-in-1.destination}") String inputEodTickersTopic,
-            TickerRepository tickerRepository, TopicConfig topicConfig) {
+            TickerRepository tickerRepository) {
         this.inputFmpTickersTopic = inputFmpTickersTopic;
         this.inputEodTickersTopic = inputEodTickersTopic;
         this.tickerRepository = tickerRepository;
@@ -32,6 +32,7 @@ public class TickerDataModelServiceImpl implements TickerDataModelService {
     public BiConsumer<KStream<String, EodTickerDTO>, KStream<String, FmpTickerDTO>> generateTickerDataModel() {
 
         return (fmpTickers, eodTickers) -> fmpTickers
+                .transformValues(() -> new LogMessageConsumed<>("x-trace-id"))
                 .peek((key, value) -> System.out.println(value));
 
     }
