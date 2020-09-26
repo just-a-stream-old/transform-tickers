@@ -20,6 +20,7 @@ spring:
           destination: ${GENERATE_TICKER_DATA_MODEL_INPUT_1:default}
 
       kafka.streams:
+        header.traceId: x-trace-id
         bindings:
           generateTickerDataModel-in-0-consumer:
             applicationId: ${GENERATE_TICKER_DATA_MODEL_APP_ID_0}

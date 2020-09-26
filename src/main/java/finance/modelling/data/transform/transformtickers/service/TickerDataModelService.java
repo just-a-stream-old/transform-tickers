@@ -7,6 +7,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import java.util.function.BiConsumer;
 
 public interface TickerDataModelService {
-    BiConsumer<KStream<String, EodTickerDTO>, KStream<String, FmpTickerDTO>> generateTickerDataModel();
+    BiConsumer<KStream<String, FmpTickerDTO>, KStream<String, EodTickerDTO>> generateTickerDataModel();
 
 }

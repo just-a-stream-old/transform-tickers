@@ -9,12 +9,15 @@ import org.springframework.context.annotation.Configuration;
 public class TopicConfig {
 
     private final String traceIdHeaderName;
-    private final String ingestEodExchangesTopic;
+    private final String ingestEodTickersTopic;
+    private final String ingestFmpTickersTopic;
 
     public TopicConfig(
             @Value("${spring.cloud.stream.kafka.streams.header.traceId}") String traceIdHeaderName,
-            @Value("${spring.cloud.stream.bindings.generateExchangeDataModel-in-0.destination}") String ingestEodExchangesTopic) {
+            @Value("${spring.cloud.stream.bindings.generateTickerDataModel-in-1.destination}") String ingestEodTickersTopic,
+            @Value("${spring.cloud.stream.bindings.generateTickerDataModel-in-0.destination}")String ingestFmpTickersTopic) {
         this.traceIdHeaderName = traceIdHeaderName;
-        this.ingestEodExchangesTopic = ingestEodExchangesTopic;
+        this.ingestEodTickersTopic = ingestEodTickersTopic;
+        this.ingestFmpTickersTopic = ingestFmpTickersTopic;
     }
 }
