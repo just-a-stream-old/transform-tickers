@@ -1,5 +1,6 @@
 context:
-  envName: ${CONTEXT_ENV_NAME:dev01}
+  envName: ${CONTEXT_ENV_NAME:nonprod}
+  version: ${CONTEXT_VERSION:v1}
 
 spring:
   # Spring Data JPA
